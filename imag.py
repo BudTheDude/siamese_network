@@ -10,7 +10,7 @@ interpreter.allocate_tensors()
 input1 = []
 input2 = []
 
-img1 = cv2.imread("test1.png")
+img1 = cv2.imread("bb3.png")
 img2 = cv2.imread("test2.png")
 
 img1 = img1.astype(np.float32)

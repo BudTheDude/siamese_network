@@ -36,27 +36,21 @@ def image_resize(image, width=None, height=None, inter=cv2.INTER_AREA):
 # Load the cascade
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 # Read the input image
-img = cv2.imread('test4.jpg')
+img = cv2.imread('mami.jpg')
 
-img = image_resize(img, 400, 400)
-# Convert into grayscale
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-# Detect faces
-faces = face_cascade.detectMultiScale(gray, 1.1, 10)
-# Draw rectangle around the faces
-for (x, y, w, h) in faces:
-    crop = img[y:(y + h), x:(x + w)]
-    cv2.imshow("img",img)
-    cv2.waitKey()
-    crop = image_resize(crop,87,65)
+def return_cropped_face(img):
+    img = image_resize(img, 400, 400)
+    # Convert into grayscale
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # Detect faces
+    faces = face_cascade.detectMultiScale(gray, 1.1, 10)
+    # Draw rectangle around the faces
+    for (x, y, w, h) in faces:
+        crop = img[y:(y + h), x:(x + w)]
+        crop = image_resize(crop,87,65)
 
-    crop = crop[0:87,14:79]
-    print(crop.shape)
-    cv2.imwrite("test4.png",crop)
-    cv2.imshow('crop', crop)
-    cv2.waitKey()
-    cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+        crop = crop[0:87,14:79]
+        cv2.imwrite("sexy.png",crop)
+        cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
-#faces[0] = image_resize(faces[0], 87, 65)
-
-# Display the output
+return_cropped_face(img)
