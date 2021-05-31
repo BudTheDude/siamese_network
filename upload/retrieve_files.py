@@ -30,4 +30,11 @@ url = "https://www.googleapis.com/drive/v2/files/"+parent_folder+"/children"
 r=requests.get(url,headers=headers)
 
 for item in r.json()["items"]:
-    print(item["id"])
+    url_file = "https://www.googleapis.com/drive/v2/files/"+item["id"]
+    r2 = requests.get(url_file,headers=headers)
+    
+    r3=requests.get(r2.json()["downloadUrl"],headers=headers)
+    f = open('myimage.png', 'wb')
+    f.write(bytearray(r3.text,encoding='utf8'))
+    f.close()
+  
