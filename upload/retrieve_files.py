@@ -33,8 +33,7 @@ for item in r.json()["items"]:
     url_file = "https://www.googleapis.com/drive/v2/files/"+item["id"]
     r2 = requests.get(url_file,headers=headers)
     
-    r3=requests.get(r2.json()["downloadUrl"],headers=headers)
-    f = open('myimage.png', 'wb')
-    f.write(bytearray(r3.text,encoding='utf8'))
-    f.close()
+    r3=requests.get("https://www.googleapis.com/drive/v2/files/1a4jNy8mvtyNJ9V3k5oheIXkFA0MMJ7dE?alt=media&source=downloadUrl",headers=headers)
+    open('hey.png', 'wb').write(r3.content)
+
   
