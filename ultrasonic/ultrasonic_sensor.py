@@ -5,6 +5,11 @@ from picamera import PiCamera
 from time import sleep
 import cv2
 from haar import return_cropped_face
+import tensorflow as tf
+import numpy as np
+from send import send_message
+from upload_to_drive import upload_image
+
 
 #GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BCM)
@@ -16,6 +21,10 @@ GPIO_ECHO = 24
 #set GPIO direction (IN / OUT)
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
+
+interpreter = tf.lite.Interpreter("model.tflite")
+
+interpreter.allocate_tensors()
  
 def distance():
     # set Trigger to HIGH
@@ -54,6 +63,28 @@ if __name__ == '__main__':
                 camera.capture('/home/pi/Desktop/try.jpg')
                 img = cv2.imread('/home/pi/Desktop/try.jpg')
                 return_cropped_face(img)
+                
+                input1 = []
+                img1 = cv2.imread("sexy.png")
+                img1 = img1.astype(np.float32)
+                input1.append(img1)
+                input_array1 = np.asarray(input1)
+                
+                input2 = []
+                img2 = cv2.imread("buni1.png")
+                img2 = img2.astype(np.float32)
+                input2.append(img2)
+                input_array2 = np.asarray(input2)
+                interpreter.set_tensor(0,input_array1)
+                interpreter.set_tensor(1,input_array2)
+
+                interpreter.invoke()
+                output = interpreter.get_tensor(interpreter.get_output_details()[0]["index"])
+                print("Prediction: ")
+                print(output)
+                if output<0.75:
+                    upload_image()
+                    send_message()
                 
                 break
             time.sleep(1)

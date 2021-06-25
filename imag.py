@@ -7,11 +7,11 @@ interpreter = tf.lite.Interpreter("model.tflite")
 
 interpreter.allocate_tensors()
 input1 = []
-img1 = cv2.imread("tati/tati1.png")
+img1 = cv2.imread("sexy.png")
 img1 = img1.astype(np.float32)
 input1.append(img1)
 input_array1 = np.asarray(input1)
-directory = "buni"
+directory = "mami"
 for filename in os.listdir(directory):
     full_name =directory+"/"+filename
     input2 = []
