@@ -9,6 +9,7 @@ import tensorflow as tf
 import numpy as np
 from send import send_message
 from upload_to_drive import upload_image
+import os
 
 
 #GPIO Mode (BOARD / BCM)
@@ -59,34 +60,42 @@ if __name__ == '__main__':
         while True:
             dist = distance()
             print ("Measured Distance = %.1f cm" % dist)
-            if(dist<=80):
+            if(dist<=15):
                 camera.capture('/home/pi/Desktop/try.jpg')
                 img = cv2.imread('/home/pi/Desktop/try.jpg')
-                return_cropped_face(img)
+                return_cropped_face(img,"new_face.png")
                 
                 input1 = []
-                img1 = cv2.imread("sexy.png")
+                img1 = cv2.imread("new_face.png")
                 img1 = img1.astype(np.float32)
                 input1.append(img1)
                 input_array1 = np.asarray(input1)
                 
-                input2 = []
-                img2 = cv2.imread("buni1.png")
-                img2 = img2.astype(np.float32)
-                input2.append(img2)
-                input_array2 = np.asarray(input2)
-                interpreter.set_tensor(0,input_array1)
-                interpreter.set_tensor(1,input_array2)
+                is_unknown = True
+                directory = "known_persons"
+                for filename in os.listdir(directory):
+                    full_name =directory+"/"+filename
+                    input2 = []
+                    img2 = cv2.imread(full_name)
+                    img2 = img2.astype(np.float32)
+                    input2.append(img2)
+                    input_array2 = np.asarray(input2)
+                    interpreter.set_tensor(0,input_array1)
+                    interpreter.set_tensor(1,input_array2)
 
-                interpreter.invoke()
-                output = interpreter.get_tensor(interpreter.get_output_details()[0]["index"])
-                print("Prediction: ")
-                print(output)
-                if output<0.75:
+                    interpreter.invoke()
+                    output = interpreter.get_tensor(interpreter.get_output_details()[0]["index"])
+                    print("Prediction: ")
+                    print(output)
+                    if output>0.75:
+                        print(filename)
+                        is_unknown = False
+                    
+                if is_unknown:
                     upload_image()
                     send_message()
                 
-                break
+                
             time.sleep(1)
  
         # Reset by pressing CTRL + C

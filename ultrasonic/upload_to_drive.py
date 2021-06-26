@@ -29,11 +29,10 @@ def upload_image():
     }
     files = {
         'data': ('metadata', json.dumps(para), 'application/json; charset=UTF-8'),
-        'file': open("./sexy.png", "rb")
+        'file': open("./new_face.png", "rb")
     }
     r = requests.post(
         "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
         headers=headers,
         files=files
     )
-    print(r.text)

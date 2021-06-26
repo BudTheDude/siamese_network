@@ -38,7 +38,7 @@ face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 # Read the input image
 img = cv2.imread('mami.jpg')
 
-def return_cropped_face(img):
+def return_cropped_face(img,person_name):
     img = image_resize(img, 400, 400)
     # Convert into grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -50,7 +50,7 @@ def return_cropped_face(img):
         crop = image_resize(crop,87,65)
 
         crop = crop[0:87,14:79]
-        cv2.imwrite("sexy.png",crop)
+        cv2.imwrite(person_name,crop)
         cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
-return_cropped_face(img)
+#return_cropped_face(img)

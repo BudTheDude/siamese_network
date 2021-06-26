@@ -10,5 +10,4 @@ def send_message():
                       routing_key='hello',
                       body='Hello CloudAMQP!')
 
-    print(" [x] Sent 'Hello World!'")
     connection.close()
